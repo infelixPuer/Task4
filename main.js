@@ -63,3 +63,25 @@ function deleteNonConfigurable(obj, prop) {
 
     delete obj[prop];
 }
+
+// Task 3: Object property getters and setters
+const bankAccount = {
+    _balance: 1000,
+    get formattedBalance() {
+        return `$${this._balance}`;
+    },
+    set balance(value) {
+        this._balance = value;
+    },
+    transfer: function(bankAcc1, bankAcc2, amount) {
+        let bankAcc1Balance = Number.parseInt(bankAcc1.formattedBalance.substring(1));
+        let bankAcc2Balance = Number.parseInt(bankAcc2.formattedBalance.substring(1));
+
+        if (bankAcc1Balance < amount)
+            throw new Error("bankAcc1 does not have enough money!");
+
+        bankAcc1.balance = bankAcc1Balance - amount;
+        bankAcc2.balance = bankAcc2Balance + amount;
+    }
+};
+
