@@ -159,3 +159,41 @@ function deepCloneObject(obj, clonedObjs = new WeakMap()) {
 
     return newObj;
 }
+
+// Task 7: Object Property Validation
+function validateObject(obj, schema) {
+    for (let prop in schema) {
+        if (!obj[prop]) return false;
+
+        if (schema[prop].type && (typeof obj[prop] !== schema[prop].type)) return false;
+
+        if (schema[prop].validateValue && !schema[prop].validateValue(obj[prop]))
+            return false;
+
+    }
+
+    return true;
+}
+
+let obj = {
+    name: "John",
+    email: "test@example.com",
+    age: 25,
+}
+
+let schema = {
+    name: {
+        type: "string",
+        validateValue: (value) => /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/.test(value.toString()),
+    },
+    email: {
+        type: "string",
+        validateValue: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.toString()),
+    },
+    age: {
+        type: "number",
+        validateValue: (value) => /^(?:1[0-4]?\d|150|[2-9]\d|[0-9])$/.test(value.toString()),
+    }
+}
+
+console.log(validateObject(obj, schema));
