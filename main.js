@@ -141,3 +141,21 @@ function callback(prop, action, value = null) {
 
 let personProxy = observeObject(person, callback);
 
+// Task 6: Object Deep Cloning
+function deepCloneObject(obj, clonedObjs = new WeakMap()) {
+    if (clonedObjs.has(obj)) return obj;
+
+    const newObj = Array.isArray(obj) ? [] : {};
+    clonedObjs.set(obj, newObj);
+
+    for (let prop in obj) {
+        if (typeof obj[prop] === "object") {
+            newObj[prop] = deepCloneObject(obj[prop], clonedObjs);
+            continue;
+        }
+
+        newObj[prop] = obj[prop];
+    }
+
+    return newObj;
+}
