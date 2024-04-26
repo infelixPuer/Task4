@@ -13,17 +13,20 @@ for (let prop in person) {
 }
 
 person.updateInfo = function(newInfo) {
-    for (let prop in newInfo) {
-        if (!(prop in person)) throw new Error("Object newInfo must contain properties of person object!");
+    let personDesc = Object.getOwnPropertyDescriptors(this);
 
-        this[prop] = newInfo[prop];
+    for (let prop in personDesc) {
+        if (personDesc[prop].writable && prop in newInfo)
+            this[prop] = newInfo[prop];
     }
 };
 
-person.address = {};
+person.address = "";
 Object.defineProperty(person, "address", {
+    writable: true,
     enumerable: false,
     configurable: false,
+    value: "Warsaw",
 })
 
 // Task 2: Object Property Enumeration and Deletion
@@ -196,4 +199,4 @@ let schema = {
     }
 }
 
-console.log(validateObject(obj, schema));
+//console.log(validateObject(obj, schema));
